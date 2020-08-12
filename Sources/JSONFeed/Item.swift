@@ -20,6 +20,7 @@ public struct Item {
     public let author: Author?
     public let tags: [String]?
     public let attachments: [Attachment]
+    public let customObjects: [String: [String: AnyHashable]]?
 
     public init(json: [AnyHashable: Any]) throws {
         guard let id = json["id"] as? String else {
@@ -65,5 +66,18 @@ public struct Item {
         } else {
             self.attachments = []
         }
+        
+        var customObjects: [String: [String: AnyHashable]] = [:]
+        for (key, value) in json {
+            if let key = key as? String, key.prefix(1) == "_", let value = value as? [String: AnyHashable] {
+                customObjects[key] = value
+            }
+        }
+        if customObjects.isEmpty {
+            self.customObjects = nil
+        } else {
+            self.customObjects = customObjects
+        }
+        
     }
 }

@@ -55,4 +55,38 @@ class ItemTests: XCTestCase {
         XCTAssertEqual(item?.attachments.first?.url.absoluteString, url)
         XCTAssertEqual(item?.attachments.first?.mimeType, text)
     }
+
+    func testExtension() {
+
+        // given
+        let json: [String: Any] = [
+            "id": "itemId",
+            "published": "2020-08-12T01:09:45+00:00",
+            "_someObject": [
+                "key1": "value1",
+                "key2": 2345
+            ]
+        ]
+
+        // when
+        let item = try? Item(json: json)
+
+        // then
+        XCTAssertEqual(item?.customObjects?["_someObject"]?["key1"], "value1")
+        XCTAssertEqual(item?.customObjects?["_someObject"]?["key2"], 2345)
+    }
+
+    func testNoExtension() {
+        // given
+        let json: [String: Any] = [
+            "id": "itemId",
+            "published": "2020-08-12T01:09:45+00:00"
+        ]
+        
+        // when
+        let item = try? Item(json: json)
+        
+        // then
+        XCTAssertNil(item?.customObjects)
+    }
 }
