@@ -20,6 +20,8 @@ public struct Item {
     public let author: Author?
     public let tags: [String]?
     public let attachments: [Attachment]
+    
+    // Consider dynamic member lookup for custom objects? https://www.hackingwithswift.com/articles/55/how-to-use-dynamic-member-lookup-in-swift
     public let customObjects: [String: [String: AnyHashable]]?
 
     public init(json: [AnyHashable: Any]) throws {
